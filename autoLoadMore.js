@@ -1,9 +1,9 @@
-/**
+    /**
  * 
  * @cchen
  * @date    2017-06-05 
  * @version 2.0
- * @plugin Toast
+ * @plugin autoLoadMore
  */
 ;
 (function(root, factory) {
@@ -34,7 +34,9 @@
                 ajax_url: '',
                 ajax_data: {},
                 finishTips: '已没有更多数据',
-                requestSuccess: function(){}
+                extactHeight: 0,
+                requestKey: 'data',
+                requestSuccess: function(res){}
             };
             var key;
             for (key in options) {
@@ -99,13 +101,11 @@
                 var dif = listH - eleH;
                 var data = _this.opt.ajax_data;
                 data.page = _this.opt.start_page;
-                if (dif > 10 && topPos > dif - 150 && _this.ajax_flag == 0) {
+                if (dif > 10 && topPos > dif - 150+_this.opt.extactHeight && _this.ajax_flag == 0) {
                     _this.ajax_flag = 1;
-                    if(!$('.add-loading').get(0)){
-                        $scroller.append(addloadTpl);
-                        var loaderH = $('.add-loading').innerHeight();
-                        $scroller.animate({ 'scrollTop': (loaderH+topPos) + 'px' }, 300);
-                    }
+                    $thelist.after(addloadTpl);
+                    var loaderH = $('.add-loading').innerHeight();
+                    $scroller.animate({ 'scrollTop': (loaderH+topPos) + 'px' }, 300);
                     $.ajax({
                         type: _this.opt.ajax_type,
                         url: _this.opt.ajax_url,
@@ -114,8 +114,9 @@
                         success: function(res) {
                             if (res.error == 0) {
                         		_this.opt.requestSuccess(res);
-                                if (res.data != null && res.data.length > 0) {
+                                if (res[_this.opt.requestKey] != null && res[_this.opt.requestKey].length > 0) {
                                     _this.ajax_flag = 0;
+                                    $thelist.next().remove();
                                 }
                                 else{
                                      $thelist.next().html(_this.opt.finishTips);
