@@ -35,7 +35,7 @@
 | Option | 类型 | 默认值 | 说明 |
 | ------------- |:-------------:|:-------------:| :-------------|
 scrollerEle | string | #scroller-wrapper | 滚动元素的id |
-listEle | string | .thelist | 滚动元素中唯一子元素 |
+listEle | string | .thelist | 滚动元素中包裹列表项的父元素 |
 tipsPadding | number | 10 | 加载提示的上下padding |
 tipsFontColor | string | #777 | 加载提示的文字颜色 |
 tipsFontSize | number | 12 | 加载提示的文字大小 |
