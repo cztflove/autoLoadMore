@@ -5,8 +5,7 @@
  * @version 2.0
  * @plugin autoLoadMore
  */
-;
-(function(root, factory) {
+;(function(root, factory) {
     root.autoLoadMore = factory();
 
 })(window, function() {
@@ -17,7 +16,12 @@
         window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
         window.cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame || window.msCancelAnimationFrame;
         this.extend(options);
-        this.$scrollerEle = $(this.opt.scrollerEle);
+        if(this.opt.scrollerEle == 'window'){
+            this.$scrollerEle = $(window);
+        }
+        else{
+            this.$scrollerEle = $(this.opt.scrollerEle);
+        }
         this.init();
     };
     autoLoadMore.prototype = {
@@ -34,7 +38,7 @@
                 ajax_url: '',
                 ajax_data: {},
                 finishTips: '已没有更多数据',
-                extactHeight: 0,
+                exactHeight: 0,
                 requestKey: 'data',
                 requestSuccess: function(res){}
             };
@@ -90,22 +94,27 @@
             var _this = this;
             var eleH = _this.$scrollerEle.height();
             var loaderGif = '<div class="ball-clip-rotate"><div></div></div>'; 
-            var addloadTpl = '<div class="add-loading" style="padding:'+_this.opt.tipsPadding+'px 0;background-color:'+_this.opt.tipsBackground+';text-align:center;color:'+_this.opt.tipsFontColor+';font-size:'+_this.opt.tipsFontSize+'">'+loaderGif+'加载中...</div>';
+            var addloadTpl = '<div class="add-loading" style="padding:'+_this.opt.tipsPadding+'px 0;background-color:'+_this.opt.tipsBackground+';text-align:center;color:'+_this.opt.tipsFontColor+';font-size:'+_this.opt.tipsFontSize+'px;">'+loaderGif+'加载中...</div>';
             addCssByStyle('.ball-clip-rotate{display:inline-block;margin-right:5px;vertical-align:middle;}.ball-clip-rotate>div{border-radius:100%;margin:2px;border:2px solid #ccc;border-bottom-color:transparent;height:16px;width:16px;background:0 0!important;display:inline-block;-webkit-animation:rotate .75s 0s linear infinite;animation:rotate .75s 0s linear infinite;}@keyframes rotate{0%{transform:rotate(0deg);}50%{transform:rotate(180deg);}100%{transform:rotate(360deg);}}@-webkit-keyframes rotate{0%{-webkit-transform:rotate(0deg);}50%{-webkit-transform:rotate(180deg);}100%{-webkit-transform:rotate(360deg);}}');
 
             var scrollHandler = debounce(function() {
                 var $scroller = _this.$scrollerEle;
                 var topPos = parseFloat($scroller.scrollTop().toFixed(2));
-                var $thelist = _this.$scrollerEle.find('.thelist');
+                var $thelist = _this.$scrollerEle.find(_this.opt.listEle);
                 var listH = parseInt($thelist.height());
                 var dif = listH - eleH;
                 var data = _this.opt.ajax_data;
                 data.page = _this.opt.start_page;
-                if (dif > 10 && topPos > dif - 150+_this.opt.extactHeight && _this.ajax_flag == 0) {
+                if (dif > 10 && topPos > dif - 150+_this.opt.exactHeight && _this.ajax_flag == 0) {
                     _this.ajax_flag = 1;
                     $thelist.after(addloadTpl);
                     var loaderH = $('.add-loading').innerHeight();
-                    $scroller.animate({ 'scrollTop': (loaderH+topPos) + 'px' }, 300);
+                    if(_this.opt.scrollerEle == 'window'){
+                        $('html,body').animate({ 'scrollTop': (loaderH+topPos) + 'px' }, 300);
+                    }
+                    else{
+                        $scroller.animate({ 'scrollTop': (loaderH+topPos) + 'px' }, 300);
+                    }
                     $.ajax({
                         type: _this.opt.ajax_type,
                         url: _this.opt.ajax_url,
