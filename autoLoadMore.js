@@ -98,9 +98,9 @@
             addCssByStyle('.ball-clip-rotate{display:inline-block;margin-right:5px;vertical-align:middle;}.ball-clip-rotate>div{border-radius:100%;margin:2px;border:2px solid #ccc;border-bottom-color:transparent;height:16px;width:16px;background:0 0!important;display:inline-block;-webkit-animation:rotate .75s 0s linear infinite;animation:rotate .75s 0s linear infinite;}@keyframes rotate{0%{transform:rotate(0deg);}50%{transform:rotate(180deg);}100%{transform:rotate(360deg);}}@-webkit-keyframes rotate{0%{-webkit-transform:rotate(0deg);}50%{-webkit-transform:rotate(180deg);}100%{-webkit-transform:rotate(360deg);}}');
 
             var scrollHandler = debounce(function() {
-                var $scroller = _this.$scrollerEle;
-                var topPos = parseFloat($scroller.scrollTop().toFixed(2));
-                var $thelist = _this.$scrollerEle.find(_this.opt.listEle);
+                var $scroller = _this.opt.scrollerEle == 'window' ? $('body') : _this.$scrollerEle;
+                var topPos = parseFloat(_this.$scrollerEle.scrollTop().toFixed(2));
+                var $thelist = $scroller.find(_this.opt.listEle);
                 var listH = parseInt($thelist.height());
                 var dif = listH - eleH;
                 var data = _this.opt.ajax_data;
