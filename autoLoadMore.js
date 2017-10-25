@@ -1,8 +1,8 @@
     /**
  * 
  * @cchen
- * @date    2017-06-05 
- * @version 2.0
+ * @date    2017-10-25 
+ * @version 2.1
  * @plugin autoLoadMore
  */
 ;(function(root, factory) {
