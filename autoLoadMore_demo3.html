@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="common_m.css" rel="stylesheet">
+<style type="text/css">
+	html,body{
+        margin:0;
+        padding: 0;
+	}
+	.banner{
+		height: 200px;
+		background-color: #ccc;
+	}
+	.footer{
+		padding: 20px 0;
+		background-color: #ccc;
+		text-align: center;
+	}
+</style>
+</head>
+<body>
+	<div class="banner"></div>
+    <ul class="thelist">
+        <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
+        <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
+        <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
+        <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
+        <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
+        <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
+        <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
+        <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
+        <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
+        <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
+        <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
+        <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
+        <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
+        <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
+        <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
+    </ul>   
+    <div class="footer">created by cchen</div>
+    <script src="jquery.min.js"></script>
+    <script src="autoLoadMore.js"></script> 
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var load = new autoLoadMore({
+                scrollerEle: 'window',
+                overtopHeight: $('.banner').height()
+            });
+        });
+    </script>
+</body>
+</html>

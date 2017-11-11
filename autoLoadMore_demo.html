@@ -7,7 +7,7 @@
 <title>Examples</title>
 <meta name="description" content="">
 <meta name="keywords" content="">
-<link href="" rel="stylesheet">
+<link href="common_m.css" rel="stylesheet">
 <style type="text/css">
 	html,body{
         margin:0;
@@ -16,30 +16,44 @@
         overflow: hidden;
 	}
     #scroller-wrapper{
-        height: 100%;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
+    }
+    .thelist{
+    }
+    .banner{
+        height: 200px;
+        background-color: #ccc;
+    }
+    .footer{
+        padding: 15px 0;
+        text-align: center;
+        background-color: #ccc;
     }
 </style>
 </head>
 <body>
-	<div id="scroller-wrapper">
-        <ul class="thelist">
-            <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
-            <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
-            <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
-            <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
-            <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
-            <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
-            <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
-            <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
-            <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
-            <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
-            <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
-            <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
-        </ul>   
+	<div class="ub ub-ver" style="height: 100%;">
+        <div class="banner"></div>
+        <div class="ub-f1" id="scroller-wrapper">
+            <ul class="thelist">
+                <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
+                <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
+                <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
+                <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
+                <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
+                <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
+                <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
+                <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
+                <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
+                <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
+                <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
+                <li style="padding: 20px 10px;border-bottom: 1px solid #ddd;">测试列表</li>
+            </ul>   
+        </div>
+        <div class="footer">created by cchen</div>
     </div>
-    <script src="http://cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+    <script src="jquery.min.js"></script>
     <script src="autoLoadMore.js"></script> 
     <script type="text/javascript">
         var load = new autoLoadMore();

@@ -1,8 +1,8 @@
     /**
  * 
  * @cchen
- * @date    2017-10-25 
- * @version 2.1
+ * @date    2017-11-11 
+ * @version 3
  * @plugin autoLoadMore
  */
 ;(function(root, factory) {
@@ -16,12 +16,6 @@
         window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
         window.cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame || window.msCancelAnimationFrame;
         this.extend(options);
-        if(this.opt.scrollerEle == 'window'){
-            this.$scrollerEle = $(window);
-        }
-        else{
-            this.$scrollerEle = $(this.opt.scrollerEle);
-        }
         this.init();
     };
     autoLoadMore.prototype = {
@@ -38,7 +32,7 @@
                 ajax_url: '',
                 ajax_data: {},
                 finishTips: '已没有更多数据',
-                exactHeight: 0,
+                overtopHeight: 0,
                 requestKey: 'data',
                 requestSuccess: function(res){}
             };
@@ -76,45 +70,46 @@
 			    else  
 			        doc.documentElement.appendChild(style);  
 			};
-			var debounce = function(func, wait, immediate) {
-				var timeout;
-				return function() {
-					var context = this, args = arguments;
-					var later = function() {
-						timeout = null;
-						if (!immediate) func.apply(context, args);
-					};
-					var callNow = immediate && !timeout;
-					clearTimeout(timeout);
-					timeout = setTimeout(later, wait);
-					if (callNow) func.apply(context, args);
-				};
-			};
-
+			
             var _this = this;
-            var eleH = _this.$scrollerEle.height();
+            _this.$scrollerEle = _this.opt.scrollerEle == 'window'? $(window) : $(this.opt.scrollerEle);
+            _this.scrollerEleH = _this.opt.scrollerEle == 'window'? _this.$scrollerEle.height() - _this.opt.overtopHeight : _this.$scrollerEle.height();
             var loaderGif = '<div class="ball-clip-rotate"><div></div></div>'; 
             var addloadTpl = '<div class="add-loading" style="padding:'+_this.opt.tipsPadding+'px 0;background-color:'+_this.opt.tipsBackground+';text-align:center;color:'+_this.opt.tipsFontColor+';font-size:'+_this.opt.tipsFontSize+'px;">'+loaderGif+'加载中...</div>';
             addCssByStyle('.ball-clip-rotate{display:inline-block;margin-right:5px;vertical-align:middle;}.ball-clip-rotate>div{border-radius:100%;margin:2px;border:2px solid #ccc;border-bottom-color:transparent;height:16px;width:16px;background:0 0!important;display:inline-block;-webkit-animation:rotate .75s 0s linear infinite;animation:rotate .75s 0s linear infinite;}@keyframes rotate{0%{transform:rotate(0deg);}50%{transform:rotate(180deg);}100%{transform:rotate(360deg);}}@-webkit-keyframes rotate{0%{-webkit-transform:rotate(0deg);}50%{-webkit-transform:rotate(180deg);}100%{-webkit-transform:rotate(360deg);}}');
+            var $scroller = _this.opt.scrollerEle == 'window' ? $('body') : _this.$scrollerEle;
+            var $thelist = $scroller.find(_this.opt.listEle);  
+            $thelist.after(addloadTpl);
 
+            _this.bindEvent();            
+        },
+        bindEvent: function(){
+            var _this = this;
+            var debounce = function(func, wait, immediate) {
+                var timeout;
+                return function() {
+                    var context = this, args = arguments;
+                    var later = function() {
+                        timeout = null;
+                        if (!immediate) func.apply(context, args);
+                    };
+                    var callNow = immediate && !timeout;
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                    if (callNow) func.apply(context, args);
+                };
+            };
             var scrollHandler = debounce(function() {
                 var $scroller = _this.opt.scrollerEle == 'window' ? $('body') : _this.$scrollerEle;
-                var topPos = parseFloat(_this.$scrollerEle.scrollTop().toFixed(2));
-                var $thelist = $scroller.find(_this.opt.listEle);
-                var listH = parseInt($thelist.height());
-                var dif = listH - eleH;
+                var topPos = parseFloat(_this.$scrollerEle.scrollTop().toFixed(2));  //滚动高度
+                var $thelist = $scroller.find(_this.opt.listEle);  
+                var listH = parseInt($thelist.height()); //列表高度
+                var dif = listH - _this.scrollerEleH;
+                var bounnceValue = _this.opt.scrollerEle == 'window' ? dif - 150+_this.opt.overtopHeight : dif - 150
                 var data = _this.opt.ajax_data;
                 data.page = _this.opt.start_page;
-                if (dif > 10 && topPos > dif - 150+_this.opt.exactHeight && _this.ajax_flag == 0) {
+                if (dif > 10 && topPos > bounnceValue && _this.ajax_flag == 0) {
                     _this.ajax_flag = 1;
-                    $thelist.after(addloadTpl);
-                    var loaderH = $('.add-loading').innerHeight();
-                    if(_this.opt.scrollerEle == 'window'){
-                        $('html,body').animate({ 'scrollTop': (loaderH+topPos) + 'px' }, 300);
-                    }
-                    else{
-                        $scroller.animate({ 'scrollTop': (loaderH+topPos) + 'px' }, 300);
-                    }
                     $.ajax({
                         type: _this.opt.ajax_type,
                         url: _this.opt.ajax_url,
@@ -122,10 +117,10 @@
                         dataType: 'json',
                         success: function(res) {
                             if (res.error == 0) {
-                        		_this.opt.requestSuccess(res);
+                                _this.opt.requestSuccess(res);
                                 if (res[_this.opt.requestKey] != null && res[_this.opt.requestKey].length > 0) {
                                     _this.ajax_flag = 0;
-                                    $thelist.next().remove();
+                                    // $thelist.next().remove();
                                 }
                                 else{
                                      $thelist.next().html(_this.opt.finishTips);
