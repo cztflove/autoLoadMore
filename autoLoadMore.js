@@ -78,8 +78,12 @@
             var addloadTpl = '<div class="add-loading" style="padding:'+_this.opt.tipsPadding+'px 0;background-color:'+_this.opt.tipsBackground+';text-align:center;color:'+_this.opt.tipsFontColor+';font-size:'+_this.opt.tipsFontSize+'px;">'+loaderGif+'加载中...</div>';
             addCssByStyle('.ball-clip-rotate{display:inline-block;margin-right:5px;vertical-align:middle;}.ball-clip-rotate>div{border-radius:100%;margin:2px;border:2px solid #ccc;border-bottom-color:transparent;height:16px;width:16px;background:0 0!important;display:inline-block;-webkit-animation:rotate .75s 0s linear infinite;animation:rotate .75s 0s linear infinite;}@keyframes rotate{0%{transform:rotate(0deg);}50%{transform:rotate(180deg);}100%{transform:rotate(360deg);}}@-webkit-keyframes rotate{0%{-webkit-transform:rotate(0deg);}50%{-webkit-transform:rotate(180deg);}100%{-webkit-transform:rotate(360deg);}}');
             var $scroller = _this.opt.scrollerEle == 'window' ? $('body') : _this.$scrollerEle;
-            var $thelist = $scroller.find(_this.opt.listEle);  
-            $thelist.after(addloadTpl);
+            var $thelist = $scroller.find(_this.opt.listEle); 
+            var listH = parseInt($thelist.height()); 
+            var dif = listH - _this.scrollerEleH;
+            if(dif > 10){
+                $thelist.after(addloadTpl);
+            }
 
             _this.bindEvent();            
         },
